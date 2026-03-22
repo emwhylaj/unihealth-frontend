@@ -44,6 +44,36 @@ const patientNavItems = [
   },
 ];
 
+const hospitalNavItems = [
+  {
+    label: "Overview",
+    href: "/dashboard",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Verify Patient",
+    href: "/dashboard/hospital/verify",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+  },
+  {
+    label: "Search Patient",
+    href: "/dashboard/hospital/search",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    ),
+  },
+];
+
 const adminNavItems = [
   {
     label: "Overview",
@@ -69,7 +99,15 @@ export default function Sidebar() {
   const pathname = usePathname();
   const role = useAuthStore((s) => s.user?.role);
 
-  const navItems = role === "Admin" ? adminNavItems : patientNavItems;
+  const navItems =
+    role === "Admin" ? adminNavItems :
+    role === "Hospital" ? hospitalNavItems :
+    patientNavItems;
+
+  const roleLabel =
+    role === "Admin" ? "Admin Panel" :
+    role === "Hospital" ? "Hospital Portal" :
+    null;
 
   return (
     <aside className="w-64 min-h-screen bg-[#0f1f0f] border-r border-[#1a2e1a] flex flex-col">
@@ -83,10 +121,10 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      {role === "Admin" && (
+      {roleLabel && (
         <div className="px-4 pt-4">
           <span className="text-xs font-semibold text-[#4ade80]/60 uppercase tracking-widest px-4">
-            Admin Panel
+            {roleLabel}
           </span>
         </div>
       )}
