@@ -3,9 +3,18 @@
 import Link from "next/link";
 import { useState } from "react";
 import UniHealthLogo from "@/components/UniHealthLogo";
+import { usePathname } from 'next/navigation';
 
-export default function Navbar() {
+export default function Navbar({ href }: { href?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  
+  const linkClass = (href: string) =>
+    `text-sm font-medium transition-colors ${
+      pathname === href
+        ? 'text-[#4ade80]'
+        : 'text-gray-300 hover:text-[#4ade80]'
+    }`;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4 bg-transparent">
@@ -21,19 +30,19 @@ export default function Navbar() {
       <div className="hidden md:flex items-center gap-8">
         <Link
           href="/"
-          className="text-gray-300 hover:text-[#4ade80] transition-colors text-sm font-medium"
+          className={linkClass('/')}
         >
           Home
         </Link>
         <Link
           href="/hospitals"
-          className="text-gray-300 hover:text-[#4ade80] transition-colors text-sm font-medium"
+          className={linkClass('/hospitals')}
         >
           Hospitals
         </Link>
         <Link
           href="/contact"
-          className="text-gray-300 hover:text-[#4ade80] transition-colors text-sm font-medium"
+          className={linkClass('/contact')}
         >
           Contact
         </Link>
