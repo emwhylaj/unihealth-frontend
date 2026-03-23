@@ -14,21 +14,27 @@ import type {
 const RECORD_TYPE_LABELS: Record<RecordType, string> = {
   BloodPressure: "Blood Pressure",
   BloodGlucose: "Blood Sugar",
+  BloodSugar: "Blood Sugar (legacy)",
   HeartRate: "Heart Rate",
   Temperature: "Body Temperature",
   Weight: "Weight",
   Height: "Height",
   OxygenSaturation: "Oxygen Saturation",
+  Cholesterol: "Cholesterol",
+  Custom: "Custom",
 };
 
 const RECORD_TYPE_UNITS: Record<RecordType, string> = {
   BloodPressure: "mmHg",
   BloodGlucose: "mg/dL",
+  BloodSugar: "mg/dL",
   HeartRate: "bpm",
   Temperature: "°C",
   Weight: "kg",
   Height: "cm",
   OxygenSaturation: "%",
+  Cholesterol: "mg/dL",
+  Custom: "",
 };
 
 interface RecordWithEntries extends MedicalRecordResponse {

@@ -63,7 +63,7 @@ export default function AdminHospitalsPage() {
     setFiltered(result);
   }, [search, stateFilter, hospitals]);
 
-  const states = [...new Set(hospitals.map((h) => h.state).filter(Boolean))].sort() as string[];
+  const states = Array.from(new Set(hospitals.map((h) => h.state).filter(Boolean))).sort() as string[];
 
   const formatDate = (dateStr: string) => {
     try {

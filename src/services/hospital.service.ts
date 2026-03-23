@@ -28,7 +28,44 @@ export interface MedicationResponse {
   notes?: string;
 }
 
+export type HospitalType = "General" | "Teaching" | "Specialist" | "Clinic" | "Pharmacy";
+
+export interface RegisterHospitalRequest {
+  name: string;
+  type: HospitalType;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  phone?: string;
+  email?: string;
+}
+
+export interface HospitalResponse {
+  id: string;
+  name: string;
+  type: HospitalType;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  phone?: string;
+  email?: string;
+  code: string;
+}
+
 export const hospitalService = {
+  async registerHospital(data: RegisterHospitalRequest): Promise<HospitalResponse> {
+    const response = await apiClient.post<HospitalResponse>("/api/v1/hospital/register", data);
+    return response.data;
+  },
+
+  async getMyHospital(): Promise<HospitalResponse> {
+    const response = await apiClient.get<HospitalResponse>("/api/v1/hospital/me");
+    return response.data;
+  },
+
+
   async verifyAccessCode(code: string): Promise<VerifyAccessCodeResponse> {
     const response = await apiClient.post<VerifyAccessCodeResponse>(
       "/api/v1/hospital/verify-access-code",

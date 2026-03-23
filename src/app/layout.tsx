@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/components/AuthProvider";
+import GoogleProvider from "@/components/GoogleProvider";
 
 export const metadata: Metadata = {
   title: "UniHealth – One Health Record. Every Hospital. Anywhere.",
@@ -30,33 +32,39 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[#0a0f0a] text-white antialiased">
-        <AuthProvider>
-          {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: "#1a2a1a",
-                color: "#ffffff",
-                border: "1px solid #2d4a2d",
-                borderRadius: "12px",
-              },
-              success: {
-                iconTheme: {
-                  primary: "#4ade80",
-                  secondary: "#0a0f0a",
+        <Script
+          src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"
+          strategy="beforeInteractive"
+        />
+        <GoogleProvider>
+          <AuthProvider>
+            {children}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: "#1a2a1a",
+                  color: "#ffffff",
+                  border: "1px solid #2d4a2d",
+                  borderRadius: "12px",
                 },
-              },
-              error: {
-                iconTheme: {
-                  primary: "#ef4444",
-                  secondary: "#ffffff",
+                success: {
+                  iconTheme: {
+                    primary: "#4ade80",
+                    secondary: "#0a0f0a",
+                  },
                 },
-              },
-            }}
-          />
-        </AuthProvider>
+                error: {
+                  iconTheme: {
+                    primary: "#ef4444",
+                    secondary: "#ffffff",
+                  },
+                },
+              }}
+            />
+          </AuthProvider>
+        </GoogleProvider>
       </body>
     </html>
   );

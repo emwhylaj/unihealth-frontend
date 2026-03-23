@@ -13,6 +13,7 @@ import Button from "@/components/ui/Button";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
 import { patientService } from "@/services/patient.service";
+import { hospitalService } from "@/services/hospital.service";
 
 const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -42,7 +43,20 @@ export default function EmailLoginPage() {
       // Set cookie for middleware
       document.cookie = `accessToken=${response.accessToken}; path=/; max-age=86400`;
 
-      // Non-patient roles go straight to dashboard
+      // Hospital role — check if facility profile exists
+      if (response.user.role === "Hospital") {
+        try {
+          await hospitalService.getMyHospital();
+          toast.success("Welcome back!");
+          router.push("/dashboard");
+        } catch {
+          toast.success("Logged in! Let's set up your facility profile.");
+          router.push("/hospital-onboarding");
+        }
+        return;
+      }
+
+      // Other non-patient roles go straight to dashboard
       if (response.user.role !== "Patient") {
         toast.success("Welcome back!");
         router.push("/dashboard");

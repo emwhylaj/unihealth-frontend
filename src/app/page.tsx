@@ -13,6 +13,7 @@ interface PlatformStats {
 
 export default function LandingPage() {
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<"patient" | "hospital">("patient");
   const [stats, setStats] = useState<PlatformStats | null>(null);
 
   useEffect(() => {
@@ -94,45 +95,62 @@ export default function LandingPage() {
           <div className="relative">
             <button
               onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-              className="flex items-center gap-2 bg-[#1a2a1a] border border-[#2d4a2d] text-gray-300 hover:text-[#4ade80] hover:border-[#4ade80]/50 px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-200"
+              className="flex items-center gap-2 bg-[#1a2a1a] border border-[#4ade80]/40 text-[#4ade80] hover:border-[#4ade80]/70 hover:bg-[#4ade80]/5 px-5 py-3.5 rounded-full text-sm font-medium transition-all duration-200"
             >
-              <svg
-                className="w-4 h-4 text-[#4ade80]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {selectedRole === "patient" ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                )}
               </svg>
-              I am a Patient / User
+              {selectedRole === "patient" ? "I am a Patient / User" : "I am a Medical Personnel"}
               <svg
-                className={`w-4 h-4 transition-transform ${
-                  roleDropdownOpen ? "rotate-180" : ""
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                className={`w-4 h-4 transition-transform duration-200 ${roleDropdownOpen ? "rotate-180" : ""}`}
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+
             {roleDropdownOpen && (
-              <div className="absolute top-full mt-2 left-0 right-0 bg-[#1a2a1a] border border-[#2d4a2d] rounded-xl shadow-xl z-20 overflow-hidden">
+              <div className="absolute top-full mt-2 left-0 right-0 bg-[#1a2a1a] border border-[#2d4a2d] rounded-2xl shadow-2xl z-20 overflow-hidden">
                 <button
-                  className="w-full px-4 py-3 text-sm text-gray-300 hover:text-[#4ade80] hover:bg-[#4ade80]/5 text-left transition-colors"
-                  onClick={() => setRoleDropdownOpen(false)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-sm text-left transition-colors ${
+                    selectedRole === "patient"
+                      ? "text-[#4ade80] bg-[#4ade80]/5"
+                      : "text-gray-400 hover:text-[#4ade80] hover:bg-[#4ade80]/5"
+                  }`}
+                  onClick={() => { setSelectedRole("patient"); setRoleDropdownOpen(false); }}
                 >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
                   Patient / User
+                  {selectedRole === "patient" && (
+                    <svg className="w-3.5 h-3.5 ml-auto text-[#4ade80]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+                <div className="h-px bg-[#2d4a2d]/50 mx-3" />
+                <button
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-sm text-left transition-colors ${
+                    selectedRole === "hospital"
+                      ? "text-[#4ade80] bg-[#4ade80]/5"
+                      : "text-gray-400 hover:text-[#4ade80] hover:bg-[#4ade80]/5"
+                  }`}
+                  onClick={() => { setSelectedRole("hospital"); setRoleDropdownOpen(false); }}
+                >
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                  Medical Personnel
+                  {selectedRole === "hospital" && (
+                    <svg className="w-3.5 h-3.5 ml-auto text-[#4ade80]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
                 </button>
               </div>
             )}
@@ -140,7 +158,7 @@ export default function LandingPage() {
 
           {/* Sign Up CTA */}
           <Link
-            href="/signup"
+            href={selectedRole === "hospital" ? "/signup/hospital/email" : "/signup"}
             className="bg-[#4ade80] hover:bg-[#22c55e] text-[#0a0f0a] font-bold px-8 py-3.5 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-[#4ade80]/20 hover:shadow-[#4ade80]/30"
           >
             Sign up free
