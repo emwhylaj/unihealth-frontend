@@ -55,11 +55,14 @@ export type ConditionStatus = "Active" | "Inactive" | "Resolved";
 export type RecordType =
   | "BloodPressure"
   | "BloodGlucose"
+  | "BloodSugar"
+  | "Cholesterol"
   | "HeartRate"
   | "Temperature"
   | "Weight"
   | "Height"
-  | "OxygenSaturation";
+  | "OxygenSaturation"
+  | "Custom";
 
 export interface CreatePatientProfileRequest {
   firstName: string;

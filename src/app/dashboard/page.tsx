@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
@@ -115,28 +116,26 @@ export default function DashboardProfilePage() {
 // ── Hospital Overview ─────────────────────────────────────────────────────────
 
 function HospitalOverview() {
+  const router = useRouter();
   const { setProfileName } = useAuthStore();
   const [hospital, setHospital] = useState<Record<string, string> | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-    fetch(`${apiUrl}/api/v1/hospital/me`, {
-      headers: {
-        "X-Skip-Encryption": "true",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (data) {
-          setHospital(data);
+    import("@/services/hospital.service").then(({ hospitalService }) => {
+      hospitalService
+        .getMyHospital()
+        .then((data) => {
+          setHospital(data as unknown as Record<string, string>);
           setProfileName(data.name);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [setProfileName]);
+        })
+        .catch(() => {
+          // No hospital profile — redirect to onboarding
+          router.push("/hospital-onboarding");
+        })
+        .finally(() => setLoading(false));
+    });
+  }, [setProfileName, router]);
 
   if (loading) {
     return (
